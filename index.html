@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYBRAND</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #070707; /* Light background for contrast */
+        }
+        .Header {
+            display: flex;
+            align-items: center; /* Vertically centers logo and links */
+            justify-content: space-between; /* Puts space between logo and links */
+            padding: 30px 20px; /* Optional padding around */
+            background-color: #080808; /* Optional background */
+        }
+
+        .Header .logo {
+            height: 50px; /* Adjust logo size */
+        }
+
+        .Header div a {
+            text-decoration: none;
+            color: #fdfdfd;
+            margin-left: 20px; /* Space between links */
+            font-weight: bold;
+        }
+
+        .Header div a:hover {
+            color: #007BFF; /* Hover effect */
+        }
+
+        .Search {
+            display: flex;
+            justify-content: center; /* Centers the search bar */
+            margin-top: 10px; /* Space above search bar */
+            background-image: url("mydog3.avif") ;
+            background-size: cover; /* Ensures the image covers the area */
+            background-position: center; /* Centers the image */
+            background-repeat: no-repeat;
+            height: 80vh; /* Height of the search area */
+            width: 100%; /* Full width */
+        }
+
+        .searchit {
+            width: 500px; /* Width of the search input */
+            margin: 350px auto;
+            padding: 20px; /* Padding inside the input */
+            border: 1px solid #a19de6; /* Border around the input */
+            border-radius: 10px; /* Rounded corners */
+            outline: none;
+            font-size: 16px; /* Font size of the input text */
+        }
+
+        .searchbtn {
+            padding: 20px; /* Padding inside the button */
+            margin-left: 10px; /* Space between input and button */
+            border: none; /* No border */
+            border-radius: 10px; /* Rounded corners */
+            background-color: #7b75f3; /* Button background color */
+            color: white; /* Button text color */
+            cursor: pointer; /* Pointer cursor on hover */
+            width: 150px;
+            transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+
+        .results {
+            background-image: url("searchicon.png");
+            background-color: black;
+            background-size: 10%;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin-top: 5px;
+            padding: 20px;
+            height: 300px;
+            border-radius: 5px;
+            color: rgb(250, 249, 249);
+            font-size: 20px;
+            text-align: center
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="Header">
+            <img src="blowtvlogo.jpeg" alt="mybrandlogo" class="logo">
+            <div>
+                <a href="index.html">HOME</a>
+                <a href="index copy.html">CONTACT</a>
+            </div>
+        </div>
+        <div class="Search">
+            <form id="searchForm"  class="searchbar">
+                <input type="search" name="q" class="searchit" placeholder="Seach Here..." required>
+                <button type="submit" class="searchbtn">Generate Image</button>
+            </form>
+        </div>
+        <div id="searchResults" class="results">Image will be displayed here</div>
+    </div>
+    <script>
+        document.getElementById("searchForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const query = document.querySelector(".searchit").value.trim();
+            const resultsDiv = document.getElementById("searchResults");
+
+            if (!query) {
+                resultsDiv.innerHTML = "Please enter something to search.";
+                return;
+            }
+
+            resultsDiv.innerHTML = "🔍 Searching for images...";
+
+            fetch(`https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=3&client_id=op3CxqLz-gDhKzS1mfJBBwXhtTFWOtFABGZKQ2nF9wU`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.results.length > 0) {
+                        resultsDiv.style.backgroundImage = "none";
+                        
+                        let html = `<p><strong>Results for:</strong> ${query}</p>`;
+                        data.results.forEach(img => {
+                            html += `<img src="${img.urls.small}" alt="${query}" style="max-width:100%; margin:10px 0; border-radius:8px;">`;
+                        });
+                        resultsDiv.innerHTML = html;
+                    } else {
+                        resultsDiv.innerHTML = `❌ No images found for "${query}".`;
+                    }
+                })
+                .catch(err => {
+                    resultsDiv.innerHTML = "❌ Error fetching images.";
+                    console.error(err);
+                });
+        });
+
+    </script>
+</body>
+</html>
