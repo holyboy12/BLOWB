@@ -45,7 +45,7 @@
         }
 
         .searchit {
-            width: 500px; /* Width of the search input */
+            max-width: 500px; /* Width of the search input */
             margin: 350px auto;
             padding: 20px; /* Padding inside the input */
             border: 1px solid #a19de6; /* Border around the input */
@@ -80,7 +80,24 @@
             font-size: 20px;
             text-align: center
         }
-
+        @media screen and (max-width: 600px) {
+            .Header {
+                flex-direction: column; /* Stack logo and links vertically */
+                align-items: center; /* Center items */
+            }
+            .Header div a {
+                margin-left: 0; /* Remove left margin for smaller screens */
+                margin-top: 10px; /* Add top margin for spacing */
+            }
+            .Search {
+                height: 60vh; /* Adjust height for smaller screens */
+            }
+            .searchit {
+                width: 90%; /* Full width on small screens */
+                margin: 20px auto; /* Center with margin */
+            }
+            
+        }
     </style>
 </head>
 <body>
